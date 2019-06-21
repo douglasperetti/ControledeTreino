@@ -21,7 +21,6 @@ export default class CadastroDeExercicios extends Component {
 
   componentDidMount() {
     criaTabelaExercicios()
-    // teste()
   }
 
   constructor() {

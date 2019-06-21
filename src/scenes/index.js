@@ -4,6 +4,7 @@ import MenuPrincipal from '../scenes/Telas/MenuPrincipal'
 import CadastroDeTreinos from '../scenes/Telas/CadastroDeTreinos'
 import SelecionaExercicios from '../scenes/Telas/SelecionaExercicios'
 import MeusTreinos from '../scenes/Telas/MeusTreinos'
+import IniciarTreino from '../scenes/Telas/IniciarTreino'
 
 const Cenas = createStackNavigator(
     {
@@ -11,8 +12,8 @@ const Cenas = createStackNavigator(
         CadastroDeExercicios: {screen:CadastroDeExercicios},
         CadastroDeTreinos: {screen:CadastroDeTreinos},
         SelecionaExercicios: {screen:SelecionaExercicios},
-        MeusTreinos: {screen:MeusTreinos}
- 
+        MeusTreinos: {screen:MeusTreinos},
+        IniciarTreino: {screen:IniciarTreino}
     },
     {
         headerMode:'none'

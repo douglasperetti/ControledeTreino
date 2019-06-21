@@ -6,7 +6,6 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
-  Image,
   Alert
 } from 'react-native';
 import Header from '../../componentes/Header';
@@ -15,9 +14,6 @@ import { criaTabelaTreinos } from '../../DAO/criacaoTabelasApp'
 import { Button } from 'native-base'
 import ModalTreino from '../../componentes/ModalTreino'
 import { busca, CadastroTreinos } from '../../functions/crudExercicios'
-
-
-
 
 export default class CadastroDeTreinos extends Component {
 

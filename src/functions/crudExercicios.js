@@ -1,3 +1,4 @@
+import {Alert} from 'react-native'
 import { dbPrincipal } from '../DAO/criacaoTabelasApp'
 
 
@@ -39,6 +40,25 @@ export function buscaTreinos() {
                 treinos
             `, [], (err, data) => {
                 if(data.rows.length > 0){
+                    result(data.rows._array)
+                }
+            })
+        })
+    })
+}
+
+export function buscaExerciciosTreino(nomeTreino) {
+    return new Promise(result => {
+        dbPrincipal.transaction(tx => {
+            tx.executeSql(`
+                SELECT
+                    *
+                FROM
+                    informacaoExercicio
+                WHERE
+                    nomeTreino = ?
+            `, [nomeTreino], (err, data) => {
+                if (data.rows.length > 0){
                     result(data.rows._array)
                 }
             })

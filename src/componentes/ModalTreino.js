@@ -14,7 +14,6 @@ export default class ModalTreino extends Component {
         }
     }
 
-
     componentWillReceiveProps(props) {
         this.setState({ result: props.data})
     }

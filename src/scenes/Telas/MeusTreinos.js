@@ -1,15 +1,16 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, FlatList, Alert } from 'react-native'
 import { Card } from 'react-native-elements';
 import Header from '../../componentes/Header';
 import StatusBar from '../../componentes/StatusBar';
-import { buscaTreinos } from '../../functions/crudExercicios'
+import { buscaTreinos, buscaExerciciosTreino } from '../../functions/crudExercicios'
 export default class MeusTreinos extends React.Component {
 
     constructor() {
         super()
         this.state = {
-            dados: []
+            dados: [],
+            dadosTreino: []
         }
     }
 
@@ -24,9 +25,16 @@ export default class MeusTreinos extends React.Component {
         }
     }
 
+    async buscaExercicios(nomeTreino) {
+        let result = await buscaExerciciosTreino(nomeTreino)
+        if (result.length > 0) {
+            this.setState({ dadosTreino: result })
+            this.props.navigation.navigate('IniciarTreino', { dadosDoSeuTreino: this.state.dadosTreino })
+        }
+    }
 
     itensLista = ({ item }) => (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.buscaExercicios(item.nomeTreino)}>
             <Card containerStyle={{ borderRadius: 15, elevation: 10, marginBottom: 10 }}>
                 <Text>{item.nomeTreino}</Text>
             </Card>
