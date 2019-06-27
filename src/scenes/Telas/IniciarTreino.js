@@ -1,24 +1,31 @@
 import { buscaExerciciosTreino } from '../../functions/crudExercicios'
 
 import React, { Component } from 'react';
-import { Input, Card } from 'react-native-elements'
 import {
     View,
     Text,
     StyleSheet,
     ImageBackground,
+    Alert
 } from 'react-native';
 import { Button } from 'native-base'
 
 import Header from '../../componentes/Header';
 import StatusBar from '../../componentes/StatusBar';
+import TemporizadorTreino from '../../componentes/TemporizadorTreino'
 
 export default class IniciarTreino extends Component {
+
 
     constructor() {
         super()
         this.state = {
-            dadosTreino: []
+            dadosTreino: [],
+            seriesConcluidas: 0,
+            cronometroDescanso: 0,
+            tempo: 0,
+            min: 0,
+            seg: 0
         }
     }
 
@@ -37,6 +44,46 @@ export default class IniciarTreino extends Component {
         if (result.length > 0) {
             this.setState({ dadosTreino: result })
         }
+    }
+
+    setaValores(tempo) {
+        let min
+        let seg
+        if (tempo >= 60) {
+            min = Math.floor(tempo / 60)
+            seg = tempo % 60
+        } else {
+            min = 0
+            seg = tempo
+        }
+        this.iniciaCronometro(min, seg)
+    }
+
+    iniciaCronometro(min, seg) {
+        let cont = 0
+        if (min == 0) {
+            for (let s = seg; s >= 0; s--) {
+                setTimeout(() => this.atualizaEstado(min, s), cont * 1000)
+                cont++
+            }
+        } else {
+            for (let m = min; m >= 0; m--) {
+                for (let s = seg; s >= 0; s--) {
+                    setTimeout(() => this.atualizaEstado(m, s), cont * 1000)
+                    cont++
+                }
+                seg = 59
+            }
+        }
+    }
+
+    atualizaEstado(m, s) {
+        if((s == 0) && (m == 0)){
+            Alert.alert('Aviso', 'Tempo de descanso esgotado!')
+            this.setState({seriesConcluidas : this.state.seriesConcluidas + 1})
+        }
+        this.setState({ min: m })
+        this.setState({ seg: s })
     }
 
     render() {
@@ -71,12 +118,51 @@ export default class IniciarTreino extends Component {
                             <Text style={estilos.infExercicios}>{this.state.dadosTreino[0].carga}</Text>
                         </View>
 
-                        <View style={estilos.linhasInfExercicio}> 
+                        <View style={estilos.linhasInfExercicio}>
                             <Text style={estilos.textInfExercicios}>Tempo de descanso: </Text>
                             <Text style={estilos.infExercicios}>{this.state.dadosTreino[0].tempoDeDescanso}</Text>
                         </View>
 
                     </View>
+
+                    <View style={estilos.viewSeriesConcluidas}>
+                        <Text style={estilos.textInfExercicios}>Séries concluídas: </Text>
+                        <Text style={estilos.infExercicios}>{this.state.seriesConcluidas}</Text>
+                    </View>
+
+                    <View style={estilos.viewTempoDescanso}>
+                        <Text style={estilos.textTempoDescanso}>Tempo de descanso: </Text>
+                        {
+                            this.state.min < 10
+                                ?
+                                <Text style={estilos.textTempoDescanso}>0{this.state.min}</Text>
+                                :
+                                <Text style={estilos.textTempoDescanso}>{this.state.min}</Text>
+                        }
+
+                        <Text style={estilos.textTempoDescanso}>:</Text>
+
+                        {
+                            this.state.seg < 10
+                                ?
+                                <Text style={estilos.textTempoDescanso}>0{this.state.seg}</Text>
+                                :
+                                <Text style={estilos.textTempoDescanso}>{this.state.seg}</Text>
+                        }
+                    </View>
+
+                    <View style={estilos.viewBtnDescansoIniciar}>
+                        <Button
+                            onPress={() => this.setaValores(this.state.dadosTreino[0].tempoDeDescanso)}
+                            style={estilos.btnDescanso}>
+                            <Text style={estilos.txtBtnDescansoIniciar}>INICIAR DESCANSO</Text>
+                        </Button>
+                    </View>
+
+                    <TemporizadorTreino
+                        //numeroDeSeries = {this.state.dadosTreino[0].numeroDeSeries}
+                        //seriesConcluidas = {this.state.seriesConcluidas}
+                    />
                 </View>
             </ImageBackground>
         )
@@ -96,7 +182,7 @@ const estilos = StyleSheet.create({
     },
     viewNomeTreino: {
         flexDirection: 'row',
-        marginTop: 30,
+        marginTop: 35,
         marginHorizontal: 15,
         justifyContent: 'center',
         alignItems: 'center',
@@ -117,14 +203,46 @@ const estilos = StyleSheet.create({
     },
     infExercicios: {
         color: '#FFF',
-        fontSize: 15
+        fontSize: 15,
+        fontWeight: '100',
     },
     viewDadosDoExercicio: {
-        marginTop: 60,
+        marginTop: 52,
         marginLeft: 43,
         justifyContent: 'center'
     },
-    linhasInfExercicio:{
+    linhasInfExercicio: {
         flexDirection: 'row'
+    },
+    viewSeriesConcluidas: {
+        flexDirection: 'row',
+        marginTop: 52,
+        marginLeft: 43
+    },
+    viewTempoDescanso: {
+        flexDirection: 'row',
+        marginTop: 52,
+        marginLeft: 43
+    },
+    textTempoDescanso: {
+        color: 'red',
+        fontSize: 15
+    },
+    viewBtnDescansoIniciar: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    btnDescanso: {
+        width: 280,
+        backgroundColor: 'red',
+        height: 55,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    txtBtnDescansoIniciar: {
+        color: '#FFF'
     }
 })

@@ -13,7 +13,7 @@ const Cenas = createStackNavigator(
         CadastroDeTreinos: {screen:CadastroDeTreinos},
         SelecionaExercicios: {screen:SelecionaExercicios},
         MeusTreinos: {screen:MeusTreinos},
-        IniciarTreino: {screen:IniciarTreino}
+        IniciarTreino: {screen:IniciarTreino},
     },
     {
         headerMode:'none'
