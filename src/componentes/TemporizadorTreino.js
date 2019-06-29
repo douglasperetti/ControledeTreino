@@ -1,20 +1,51 @@
 import React from 'react'
 
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { 
+    View, 
+    Text, 
+    StyleSheet, 
+    TouchableOpacity,
+    AppRegistry 
+} from 'react-native'
 import { Button } from 'native-base'
+import FormatTime from 'minutes-seconds-milliseconds' 
 
 export default class TemporizadorTreino extends React.Component {
 
     constructor() {
         super()
         this.state = {
-            min: 0,
-            seg: 0,
+            tempoDecorrido: null,
+            correndo: false,
+            iniciarTempo: null
         }
     }
 
-    iniciaCronometro(nSeries) {
-        console.log(nSeries)
+    startStop(){
+        return <Button
+                    onPress={() => this.handlePress()}
+                    style={estilos.btnIniciar}
+                >
+        <Text style={estilos.txtBtnDescansoIniciar}>{this.state.correndo ? 'FINALIZAR TREINO' : 'INICIAR TREINO'}</Text>
+    </Button>
+    }
+
+    handlePress(){
+        if(this.state.correndo == true) {
+            clearInterval(this.intervalo)
+
+            this.setState({correndo: false})
+            return
+        }
+
+        this.setState({iniciarTempo: new Date()})
+
+        this.intervalo = setInterval(() => {
+            this.setState({
+                tempoDecorrido : new Date() - this.state.iniciarTempo,
+                correndo : true
+            })
+        }, 30)
     }
 
     render() {
@@ -22,30 +53,12 @@ export default class TemporizadorTreino extends React.Component {
             <View>
                 <View style={estilos.viewTempoTreino}>
                     <Text style={estilos.textTempoTreino}>Tempo total de treino: </Text>
-                    {
-                        this.state.min < 10
-                            ?
-                            <Text style={estilos.textTempoTreino}>0{this.state.min}</Text>
-                            :
-                            <Text style={estilos.textTempoTreino}>{this.state.min}</Text>
-                    }
-
-                    <Text style={estilos.textTempoTreino}>:</Text>
-
-                    {
-                        this.state.seg < 10
-                            ?
-                            <Text style={estilos.textTempoTreino}>0{this.state.seg}</Text>
-                            :
-                            <Text style={estilos.textTempoTreino}>{this.state.seg}</Text>
-                    }
+                    <Text style={estilos.textTempoTreino}>
+                        {FormatTime(this.state.tempoDecorrido)}
+                    </Text>
                 </View>
                 <View style={estilos.viewBtnDescansoIniciar}>
-                    <Button
-                        //onPress={() => this.iniciaCronometro(this.state.numeroDeSeries)}
-                        style={estilos.btnIniciar}>
-                        <Text style={estilos.txtBtnDescansoIniciar}>INICIAR TREINO</Text>
-                    </Button>
+                    {this.startStop()}
                 </View>
             </View>
         )
