@@ -31,6 +31,10 @@ export default class MeusTreinos extends React.Component {
             this.setState({ dadosTreino: result })
             this.props.navigation.navigate('IniciarTreino', { dadosDoSeuTreino: this.state.dadosTreino })
         }
+
+        if (result == false) {
+            Alert.alert('Aviso!', 'Este treino não possui exercícios.')
+        }
     }
 
     itensLista = ({ item }) => (
@@ -47,7 +51,11 @@ export default class MeusTreinos extends React.Component {
             <ImageBackground style={estilos.container}
                 source={require('../../img/Teladefundo.jpg')}>
                 <StatusBar />
-                <Header titulo='Meus Treinos' />
+                <Header 
+                    titulo='Meus Treinos'
+                    mostraVoltar = {true}
+                    voltar={() => this.props.navigation.navigate('MenuPrincipal')}
+                />
                 <View style={{ flex: 1 }}>
                     <FlatList
                         data={this.state.dados}

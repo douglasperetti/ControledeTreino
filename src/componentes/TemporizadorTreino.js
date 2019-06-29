@@ -4,8 +4,7 @@ import {
     View, 
     Text, 
     StyleSheet, 
-    TouchableOpacity,
-    AppRegistry 
+    Alert
 } from 'react-native'
 import { Button } from 'native-base'
 import FormatTime from 'minutes-seconds-milliseconds' 
@@ -17,7 +16,8 @@ export default class TemporizadorTreino extends React.Component {
         this.state = {
             tempoDecorrido: null,
             correndo: false,
-            iniciarTempo: null
+            iniciarTempo: null,
+            handleParar : true
         }
     }
 
@@ -28,6 +28,15 @@ export default class TemporizadorTreino extends React.Component {
                 >
         <Text style={estilos.txtBtnDescansoIniciar}>{this.state.correndo ? 'FINALIZAR TREINO' : 'INICIAR TREINO'}</Text>
     </Button>
+    }
+
+    pararCronometro(){
+        if (this.state.handleParar == true){
+            this.handlePress()
+            this.setState({handleParar : false})
+            Alert.alert('Aviso', 'Treino Finalizado.')
+        }
+
     }
 
     handlePress(){
@@ -46,6 +55,11 @@ export default class TemporizadorTreino extends React.Component {
                 correndo : true
             })
         }, 30)
+
+        if(this.props.terminarTreino == true){
+            this.setState({teste : false})
+        }
+        
     }
 
     render() {
@@ -57,6 +71,14 @@ export default class TemporizadorTreino extends React.Component {
                         {FormatTime(this.state.tempoDecorrido)}
                     </Text>
                 </View>
+
+                {
+                    this.props.terminarTreino
+                        ?
+                        this.pararCronometro()
+                        :
+                        null
+                }
                 <View style={estilos.viewBtnDescansoIniciar}>
                     {this.startStop()}
                 </View>

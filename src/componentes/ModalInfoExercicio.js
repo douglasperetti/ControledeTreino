@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, View, Text } from 'react-native'
+import { Modal, View, Text, Alert } from 'react-native'
 import { Button, Input } from 'react-native-elements';
 import { InsereExerciciosNoTreino } from '../functions/crudExercicios'
 export default class ModalInfoExercicio extends React.Component{
@@ -63,10 +63,7 @@ export default class ModalInfoExercicio extends React.Component{
     
     insereRegistros(dados){
         InsereExerciciosNoTreino(dados)
-        /*numeroDeSeries,
-        numeroDeRepeticoes,
-        carga, 
-        tempoDeDescanso*/ 
+        Alert.alert('Aviso!', 'Dados inseridos com sucesso!')
     }
 
     render(){
@@ -81,6 +78,7 @@ export default class ModalInfoExercicio extends React.Component{
                     errorMessage={this.state.numeroDeSeries.trim().length == 0 ? 'Campo obrigatório' : null}
                     onChangeText={(numeroDeSeries)=> this.validaCampoSerie(numeroDeSeries)}
                     placeholder = {'Número de séries'}
+                    onSubmitEditing={() => this.inputNrepeticoes.focus()}
                 />
             </View>
 
@@ -90,6 +88,8 @@ export default class ModalInfoExercicio extends React.Component{
                     errorMessage={this.state.numeroDeRepeticoes.trim().length == 0 ? 'Campo obrigatório' : null}
                     onChangeText={(numeroDeRepeticoes)=> this.validaNumeroDeRepeticoes(numeroDeRepeticoes)}
                     placeholder = {'Número de repetições'}
+                    ref={ref => this.inputNrepeticoes = ref}
+                    onSubmitEditing={() => this.inputCarga.focus()}
                 />
             </View>
 
@@ -99,6 +99,8 @@ export default class ModalInfoExercicio extends React.Component{
                     errorMessage={this.state.carga.trim().length == 0 ? 'Campo obrigatório' : null}
                     onChangeText={(carga)=> this.validaCarga(carga)}
                     placeholder = {'Informe a carga'}
+                    ref={ref => this.inputCarga = ref}
+                    onSubmitEditing={() => this.inputTempoDescanso.focus()}
                 />
             </View>
             <View>
@@ -107,6 +109,7 @@ export default class ModalInfoExercicio extends React.Component{
                     errorMessage={this.state.tempoDeDescanso.trim().length == 0 ? 'Campo obrigatório' : null}
                     onChangeText={(tempoDeDescanso)=> this.validaTempoDeDescanso(tempoDeDescanso)}
                     placeholder = {'Informe o tempo de descanso entre as séries em segundos'}
+                    ref={ref => this.inputTempoDescanso = ref}
                 />
             </View>
             </View>

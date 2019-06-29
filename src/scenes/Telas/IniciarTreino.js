@@ -25,7 +25,8 @@ export default class IniciarTreino extends Component {
             cronometroDescanso: 0,
             tempo: 0,
             min: 0,
-            seg: 0
+            seg: 0,
+            terminarTreino : false
         }
     }
 
@@ -79,11 +80,19 @@ export default class IniciarTreino extends Component {
 
     atualizaEstado(m, s) {
         if((s == 0) && (m == 0)){
-            Alert.alert('Aviso', 'Tempo de descanso esgotado!')
             this.setState({seriesConcluidas : this.state.seriesConcluidas + 1})
+            if (this.state.dadosTreino[0].numeroDeSeries !== this.state.seriesConcluidas){
+                Alert.alert('Aviso', 'Tempo de descanso esgotado!')
+            }
         }
+
         this.setState({ min: m })
         this.setState({ seg: s })
+
+        if (this.state.seriesConcluidas == this.state.dadosTreino[0].numeroDeSeries){
+            this.setState({terminarTreino : true})
+            return
+        }
     }
 
     render() {
@@ -158,10 +167,8 @@ export default class IniciarTreino extends Component {
                             <Text style={estilos.txtBtnDescansoIniciar}>INICIAR DESCANSO</Text>
                         </Button>
                     </View>
-
                     <TemporizadorTreino
-                        //numeroDeSeries = {this.state.dadosTreino[0].numeroDeSeries}
-                        //seriesConcluidas = {this.state.seriesConcluidas}
+                        terminarTreino = {this.state.terminarTreino}
                     />
                 </View>
             </ImageBackground>

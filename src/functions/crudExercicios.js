@@ -60,7 +60,10 @@ export function buscaExerciciosTreino(nomeTreino) {
             `, [nomeTreino], (err, data) => {
                 if (data.rows.length > 0){
                     result(data.rows._array)
+                }else{
+                    result(false)
                 }
+
             })
         })
     })

@@ -85,17 +85,6 @@ export default class CadastroDeTreinos extends Component {
                 inputContainerStyle={estiloCadastroDeTreinos.input}
               />
             </View>
-            {/* <View style={[estiloCadastroDeTreinos.viewComponentes, { backgroundColor: '' }]}>
-              <Button
-                full
-                rounded
-                style={estiloCadastroDeTreinos.btnCadastrar}
-                onPress={()=> this.setState({abreModal:true})}
-                >
-                 
-                <Text style={estiloCadastroDeTreinos.txtBtn}>Selecionar Exercício</Text>
-              </Button>
-            </View> */}
             <View style={[estiloCadastroDeTreinos.viewComponentes, { backgroundColor: '' }]}>
               <Button
                 full
